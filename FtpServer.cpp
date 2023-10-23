@@ -400,6 +400,43 @@ bool FtpServer::processCommand()
     client.println(F("211 End.") );
   }
   //
+  //  NOOP
+  //
+  else if( CommandIs( "NOOP" )) {
+    client.println(F("200 Zzz...") );
+  }
+  //
+#ifdef UTF8_SUPPORT
+  //  OPTS
+  //
+  else if( CommandIs( "OPTS" )) {
+    if( ParameterIs( "UTF8 ON" ) || ParameterIs( "utf8 on" )) {
+      client.println(F("200 OK, UTF8 ON") );
+      DEBUG_PRINTLN(F("200 OK, UTF8 ON") );
+    } else {
+      client.println(F("504 Unknow OPTS") );
+      DEBUG_PRINTLN(F("504 Unknow OPTS") );
+    }
+  }
+  //
+#endif
+  //  HELP
+  //
+  else if( CommandIs( "HELP" )) {
+    client.println(F("200 Commands implemented:") );
+	client.println(F("      USER, PASS, AUTH (AUTH only return 'not implemented' code)") );
+	client.println(F("      CDUP, CWD, PWD, QUIT, NOOP") );
+	client.println(F("      MODE, PASV, PORT, STRU, TYPE") );
+	client.println(F("      ABOR, DELE, LIST, NLST, MLST, MLSD") );
+	client.println(F("      APPE, RETR, STOR") );
+	client.println(F("      MKD,  RMD") );
+	client.println(F("      RNTO, RNFR") );
+	client.println(F("      MDTM, MFMT") );
+	client.println(F("      FEAT, SIZE") );
+	client.println(F("      SITE FREE") );
+	client.println(F("      HELP") );
+  }
+  //
   //  AUTH - Not implemented
   //
   else if( CommandIs( "AUTH" ))
@@ -680,43 +717,6 @@ bool FtpServer::processCommand()
         client.println( F("250 End.") );
       }
     }
-  }
-  //
-  //  NOOP
-  //
-  else if( CommandIs( "NOOP" )) {
-    client.println(F("200 Zzz...") );
-  }
-  //
-#ifdef UTF8_SUPPORT
-  //  OPTS
-  //
-  else if( CommandIs( "OPTS" )) {
-    if( ParameterIs( "UTF8 ON" ) || ParameterIs( "utf8 on" )) {
-      client.println(F("200 OK, UTF8 ON") );
-      DEBUG_PRINTLN(F("200 OK, UTF8 ON") );
-    } else {
-      client.println(F("504 Unknow OPTS") );
-      DEBUG_PRINTLN(F("504 Unknow OPTS") );
-    }
-  }
-  //
-#endif
-  //  HELP
-  //
-  else if( CommandIs( "HELP" )) {
-    client.println(F("200 Commands implemented:") );
-	client.println(F("      USER, PASS, AUTH (AUTH only return 'not implemented' code)") );
-	client.println(F("      CDUP, CWD, PWD, QUIT, NOOP") );
-	client.println(F("      MODE, PASV, PORT, STRU, TYPE") );
-	client.println(F("      ABOR, DELE, LIST, NLST, MLST, MLSD") );
-	client.println(F("      APPE, RETR, STOR") );
-	client.println(F("      MKD,  RMD") );
-	client.println(F("      RNTO, RNFR") );
-	client.println(F("      MDTM, MFMT") );
-	client.println(F("      FEAT, SIZE") );
-	client.println(F("      SITE FREE") );
-	client.println(F("      HELP") );
   }
   //
   //  RETR - Retrieve
